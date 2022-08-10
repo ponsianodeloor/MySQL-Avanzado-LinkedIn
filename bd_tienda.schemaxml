@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8" collation="utf8_general_ci">tienda</database>
+</source>
+<canvas zoom="90">
+<tables>
+<table name="categoria" view="colnames">
+<left>804</left>
+<top>3</top>
+<width>101</width>
+<height>116</height>
+<sql_create_table>CREATE TABLE `categoria` (
+  `idCategoria` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) DEFAULT NULL,
+  `descripcion` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idCategoria`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="cliente" view="colnames">
+<left>490</left>
+<top>331</top>
+<width>86</width>
+<height>177</height>
+<sql_create_table>CREATE TABLE `cliente` (
+  `idCliente` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) DEFAULT NULL,
+  `apellido` varchar(45) DEFAULT NULL,
+  `telefono` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `ciudad` varchar(45) DEFAULT NULL,
+  `pais` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idCliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="detalle_factura" view="colnames">
+<left>461</left>
+<top>94</top>
+<width>113</width>
+<height>147</height>
+<sql_create_table>CREATE TABLE `detalle_factura` (
+  `idDetalle` int(11) NOT NULL AUTO_INCREMENT,
+  `idFactura` int(11) DEFAULT NULL,
+  `idProducto` int(11) DEFAULT NULL,
+  `precioUnitario` decimal(10,2) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idDetalle`),
+  KEY `FK_REL_FAC_DET_idx` (`idFactura`),
+  KEY `FK_REL_PRO_DET_idx` (`idProducto`),
+  CONSTRAINT `FK_REL_FAC_DET` FOREIGN KEY (`idFactura`) REFERENCES `factura` (`idFactura`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_REL_PRO_DET` FOREIGN KEY (`idProducto`) REFERENCES `producto` (`idProducto`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="empleado" view="colnames">
+<left>162</left>
+<top>178</top>
+<width>126</width>
+<height>223</height>
+<sql_create_table>CREATE TABLE `empleado` (
+  `idEmpleado` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) DEFAULT NULL,
+  `apellido` varchar(45) DEFAULT NULL,
+  `fechaIngreso` date DEFAULT NULL,
+  `fechaNacimiento` date DEFAULT NULL,
+  `sexo` enum('hombre','mujer') DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `telefono` varchar(45) DEFAULT NULL,
+  `salario` decimal(10,2) DEFAULT NULL,
+  `idDepartamento` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idEmpleado`),
+  KEY `FK_REL_DEP_EMP_idx` (`idDepartamento`),
+  CONSTRAINT `FK_REL_DEP_EMP` FOREIGN KEY (`idDepartamento`) REFERENCES `departamento` (`idDepartamento`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="factura" view="colnames">
+<left>320</left>
+<top>176</top>
+<width>101</width>
+<height>131</height>
+<sql_create_table>CREATE TABLE `factura` (
+  `idFactura` int(11) NOT NULL AUTO_INCREMENT,
+  `fecha` datetime DEFAULT NULL,
+  `idCliente` int(11) DEFAULT NULL,
+  `idEmpleado` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idFactura`),
+  KEY `FK_REL_CLI_FAC_idx` (`idCliente`),
+  KEY `FK_REL_EMP_FAC_idx` (`idEmpleado`),
+  CONSTRAINT `FK_REL_CLI_FAC` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_REL_EMP_FAC` FOREIGN KEY (`idEmpleado`) REFERENCES `empleado` (`idEmpleado`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="producto" view="colnames">
+<left>637</left>
+<top>41</top>
+<width>113</width>
+<height>131</height>
+<sql_create_table>CREATE TABLE `producto` (
+  `idProducto` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) DEFAULT NULL,
+  `idCategoria` int(11) DEFAULT NULL,
+  `precioUnitario` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`idProducto`),
+  KEY `FK_PRODUCTO_CATEGORIA_idx` (`idCategoria`),
+  CONSTRAINT `FK_PRODUCTO_CATEGORIA` FOREIGN KEY (`idCategoria`) REFERENCES `categoria` (`idCategoria`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="departamento" view="colnames">
+<left>7</left>
+<top>40</top>
+<width>124</width>
+<height>101</height>
+<sql_create_table>CREATE TABLE `departamento` (
+  `idDepartamento` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idDepartamento`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
