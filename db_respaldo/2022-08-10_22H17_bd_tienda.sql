@@ -162,28 +162,11 @@ CREATE TABLE `producto` (
   PRIMARY KEY (`idProducto`),
   KEY `FK_PRODUCTO_CATEGORIA_idx` (`idCategoria`),
   CONSTRAINT `FK_PRODUCTO_CATEGORIA` FOREIGN KEY (`idCategoria`) REFERENCES `categoria` (`idCategoria`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `producto` */
 
 insert  into `producto`(`idProducto`,`nombre`,`idCategoria`,`precioUnitario`) values (1,'Avena',2,2.00),(2,'Queso',4,6.00),(3,'Kiwi',5,0.50),(4,'Coco',2,2.30),(5,'Leche',4,2.20),(6,'Agua',3,1.50),(7,'Jugo de Naranja',3,1.80),(8,'Manzanas',5,0.50),(9,'Peras',5,1.18),(10,'Uvas',5,3.50),(11,'Jugo de Manzana',3,1.60),(12,'Arroz',2,4.00),(13,'Ciruela',6,2.00);
-
-/*Table structure for table `producto_copy` */
-
-DROP TABLE IF EXISTS `producto_copy`;
-
-CREATE TABLE `producto_copy` (
-  `idProducto` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) DEFAULT NULL,
-  `idCategoria` int(11) DEFAULT NULL,
-  `precioUnitario` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`idProducto`),
-  KEY `FK_PRODUCTO_CATEGORIA_idx` (`idCategoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
-
-/*Data for the table `producto_copy` */
-
-insert  into `producto_copy`(`idProducto`,`nombre`,`idCategoria`,`precioUnitario`) values (1,'Avena',2,2.00),(2,'Queso',4,6.00),(3,'Kiwi',5,0.50),(4,'Coco',2,2.30),(5,'Leche',4,2.20),(6,'Agua',3,1.50),(7,'Jugo de Naranja',3,1.80),(8,'Manzanas',5,0.50),(9,'Peras',5,1.18),(10,'Uvas',5,3.50),(11,'Jugo de Manzana',3,1.60),(12,'Arroz',2,4.00),(13,'Ciruela',6,2.00),(14,'gato',3,4.25);
 
 /* Procedure structure for procedure `pro_productos_categoria` */
 
@@ -195,67 +178,6 @@ DELIMITER $$
 BEGIN
 	select * from producto
 	where idCategoria = categoria;
-    END */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `sp_actualizarProducto` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `sp_actualizarProducto` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`usr_apptics`@`localhost` PROCEDURE `sp_actualizarProducto`(
-	IN id int,
-	IN nombre varchar(45),
-	IN idCategoria int,
-	in precioUnitario decimal(10,2)
-    )
-BEGIN
-	update producto set 
-		nombre = nombre,
-		idCategoria = idCategoria,
-		precioUnitario = precioUnitario
-	WHERE
-		idProducto = id;
-		
-		
-    END */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `sp_eliminarProducto` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `sp_eliminarProducto` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`usr_apptics`@`localhost` PROCEDURE `sp_eliminarProducto`(in id int)
-BEGIN
-	delete from producto where idProducto = id;
-    END */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `sp_insertarProducto` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `sp_insertarProducto` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`usr_apptics`@`localhost` PROCEDURE `sp_insertarProducto`(
-	in nombre varchar(45), 
-	IN idCategoria int,
-	IN precioUnitario decimal(10,2)
-    )
-BEGIN
-	insert into producto (
-		nombre, 
-		idCategoria, 
-		precioUnitario
-		)
-		value(
-			nombre,
-			idCategoria,
-			precioUnitario
-		);
     END */$$
 DELIMITER ;
 
