@@ -150,21 +150,6 @@ CREATE TABLE `factura` (
 
 insert  into `factura`(`idFactura`,`fecha`,`idCliente`,`idEmpleado`) values (1,'2016-10-16 00:00:00',6,2),(2,'2016-11-29 00:00:00',5,3),(3,'2017-01-22 00:00:00',10,3),(4,'2017-02-20 00:00:00',3,1),(5,'2017-03-07 00:00:00',7,3),(6,'2017-03-16 00:00:00',9,2),(7,'2017-09-06 00:00:00',11,4),(8,'2017-11-09 00:00:00',1,2),(9,'2017-11-09 00:00:00',7,3),(10,'2017-12-05 00:00:00',9,3),(11,'2018-07-18 00:00:00',3,5),(12,'2018-08-01 00:00:00',4,1),(13,'2018-08-03 00:00:00',4,4),(14,'2019-01-17 00:00:00',1,3),(15,'2019-01-22 00:00:00',7,3),(16,'2019-02-08 00:00:00',9,4),(17,'2019-03-29 00:00:00',3,4),(18,'2019-06-14 00:00:00',6,4),(19,'2019-07-14 00:00:00',1,5),(20,'2019-07-17 00:00:00',9,1);
 
-/*Table structure for table `inscriptos` */
-
-DROP TABLE IF EXISTS `inscriptos`;
-
-CREATE TABLE `inscriptos` (
-  `numerosocio` int(11) NOT NULL,
-  `deporte` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `cuotas` smallint(6) DEFAULT NULL,
-  PRIMARY KEY (`numerosocio`,`deporte`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
-/*Data for the table `inscriptos` */
-
-insert  into `inscriptos`(`numerosocio`,`deporte`,`cuotas`) values (1,'basquet',2),(1,'natacion',1),(1,'tenis',1),(2,'basquet',NULL),(2,'futbol',2),(2,'natacion',1),(2,'tenis',9),(3,'basquet',9),(3,'natacion',0),(3,'tenis',8),(4,'basquet',10);
-
 /*Table structure for table `producto` */
 
 DROP TABLE IF EXISTS `producto`;
@@ -177,7 +162,7 @@ CREATE TABLE `producto` (
   PRIMARY KEY (`idProducto`),
   KEY `FK_PRODUCTO_CATEGORIA_idx` (`idCategoria`),
   CONSTRAINT `FK_PRODUCTO_CATEGORIA` FOREIGN KEY (`idCategoria`) REFERENCES `categoria` (`idCategoria`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `producto` */
 
@@ -199,22 +184,6 @@ CREATE TABLE `producto_copy` (
 /*Data for the table `producto_copy` */
 
 insert  into `producto_copy`(`idProducto`,`nombre`,`idCategoria`,`precioUnitario`) values (1,'Avena',2,2.00),(2,'Queso',4,6.00),(3,'Kiwi',5,0.50),(4,'Coco',2,2.30),(5,'Leche',4,2.20),(6,'Agua',3,1.50),(7,'Jugo de Naranja',3,1.80),(8,'Manzanas',5,0.50),(9,'Peras',5,1.18),(10,'Uvas',5,3.50),(11,'Jugo de Manzana',3,1.60),(12,'Arroz',2,4.00),(13,'Ciruela',6,2.00),(14,'gato',3,4.25);
-
-/*Table structure for table `socios` */
-
-DROP TABLE IF EXISTS `socios`;
-
-CREATE TABLE `socios` (
-  `numero` int(11) NOT NULL AUTO_INCREMENT,
-  `documento` char(8) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `nombre` varchar(30) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `domicilio` varchar(30) COLLATE utf8_spanish_ci DEFAULT NULL,
-  PRIMARY KEY (`numero`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
-/*Data for the table `socios` */
-
-insert  into `socios`(`numero`,`documento`,`nombre`,`domicilio`) values (1,'23333333','Alberto Paredes','Colon 111'),(2,'24444444','Carlos Conte','Sarmiento 755'),(3,'25555555','Fabian Fuentes','Caseros 987'),(4,'26666666','Hector Lopez','Sucre 344');
 
 /* Procedure structure for procedure `pro_productos_categoria` */
 
@@ -253,26 +222,6 @@ BEGIN
     END */$$
 DELIMITER ;
 
-/* Procedure structure for procedure `sp_consultarProductoCursor` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `sp_consultarProductoCursor` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`usr_apptics`@`localhost` PROCEDURE `sp_consultarProductoCursor`(in id int)
-BEGIN
-	declare precioProducto decimal(10,2);
-	declare cursorPrecio cursor for
-		select precioUnitario from producto where idProducto = id;
-	
-	open cursorPrecio;
-		fetch cursorPrecio into precioProducto;
-	close cursorPrecio;
-	
-	select concat('El precio del producto usando cursor es ', precioProducto) as mensaje;
-    END */$$
-DELIMITER ;
-
 /* Procedure structure for procedure `sp_eliminarProducto` */
 
 /*!50003 DROP PROCEDURE IF EXISTS  `sp_eliminarProducto` */;
@@ -303,36 +252,6 @@ BEGIN
 		precioUnitario
 		)
 		value(
-			nombre,
-			idCategoria,
-			precioUnitario
-		);
-    END */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `sp_insertarRegistroValidacion` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `sp_insertarRegistroValidacion` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`usr_apptics`@`localhost` PROCEDURE `sp_insertarRegistroValidacion`(
-	IN nombre VARCHAR(45), 
-	IN idCategoria INT,
-	IN precioUnitario DECIMAL(10,2)
-    )
-BEGIN
-	DECLARE fk_problema CONDITION FOR 1452;
-	declare continue handler for fk_problema	
-	BEGIN
-		SELECT 'No existe la categoria' AS mensaje;
-	END;
-	INSERT INTO producto (
-		nombre, 
-		idCategoria, 
-		precioUnitario
-		)
-		VALUE(
 			nombre,
 			idCategoria,
 			precioUnitario
