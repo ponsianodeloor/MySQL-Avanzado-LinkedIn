@@ -16,27 +16,6 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`tienda` /*!40100 DEFAULT CHARACTER SET 
 
 USE `tienda`;
 
-/*Table structure for table `asociacion` */
-
-DROP TABLE IF EXISTS `asociacion`;
-
-CREATE TABLE `asociacion` (
-  `idAsociacion` int(11) NOT NULL AUTO_INCREMENT,
-  `idEmpleado` int(11) NOT NULL,
-  `nombre` varchar(45) DEFAULT NULL,
-  `apellido` varchar(45) DEFAULT NULL,
-  `fechaIngreso` date DEFAULT NULL,
-  `email` varchar(45) DEFAULT NULL,
-  `telefono` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idAsociacion`),
-  KEY `FK_EMP_ASO` (`idEmpleado`),
-  CONSTRAINT `FK_EMP_ASO` FOREIGN KEY (`idEmpleado`) REFERENCES `empleado` (`idEmpleado`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
-
-/*Data for the table `asociacion` */
-
-insert  into `asociacion`(`idAsociacion`,`idEmpleado`,`nombre`,`apellido`,`fechaIngreso`,`email`,`telefono`) values (1,1,'John','Turner','2018-01-20','johnturner@ejemplo.com','410-944-0947'),(2,3,'Alice','Morales','2018-04-26','alicemorales@ejemplo.com','617 177 211'),(3,5,'Thiago','Pereira','2018-11-03','thiagopereira@ejemplo.com','757 579 534');
-
 /*Table structure for table `categoria` */
 
 DROP TABLE IF EXISTS `categoria`;
@@ -167,43 +146,6 @@ CREATE TABLE `producto` (
 /*Data for the table `producto` */
 
 insert  into `producto`(`idProducto`,`nombre`,`idCategoria`,`precioUnitario`) values (1,'Avena',2,2.00),(2,'Queso',4,6.00),(3,'Kiwi',5,0.50),(4,'Coco',2,2.30),(5,'Leche',4,2.20),(6,'Agua',3,1.50),(7,'Jugo de Naranja',3,1.80),(8,'Manzanas',5,0.50),(9,'Peras',5,1.18),(10,'Uvas',5,3.50),(11,'Jugo de Manzana',3,1.60),(12,'Arroz',2,4.00),(13,'Ciruela',6,2.00);
-
-/* Procedure structure for procedure `pro_productos_categoria` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `pro_productos_categoria` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`usr_apptics`@`localhost` PROCEDURE `pro_productos_categoria`(IN categoria INT)
-BEGIN
-	select * from producto
-	where idCategoria = categoria;
-    END */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `sp_numEmpleadosDepartamento` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `sp_numEmpleadosDepartamento` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`usr_apptics`@`localhost` PROCEDURE `sp_numEmpleadosDepartamento`(inout idDepartamento int)
-BEGIN
-	SELECT COUNT(*) INTO idDepartamento FROM empleado WHERE empleado.idDepartamento = idDepartamento;
-    END */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `sp_obtener_salario_minimo` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `sp_obtener_salario_minimo` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`usr_apptics`@`localhost` PROCEDURE `sp_obtener_salario_minimo`(out salario double)
-BEGIN
-	select min(empleado.salario) into salario from empleado;
-    END */$$
-DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
