@@ -1,0 +1,12 @@
+DELIMITER $$
+
+CREATE
+    FUNCTION `tienda`.`fn_edad`(fecha DATE)
+    RETURNS INTEGER DETERMINISTIC
+    BEGIN
+	DECLARE edad INT;
+	SET edad = FLOOR(DATEDIFF(NOW(), fecha)/365);
+	RETURN edad;
+    END$$
+
+DELIMITER ;
